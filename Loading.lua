@@ -1,13 +1,30 @@
-loadstring([[
-local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Parent = game.CoreGui
-ScreenGui.IgnoreGuiInset = true
+-- HACKER LOADING SCREEN (FOR GAME)
 
+local player = game.Players.LocalPlayer
+local PlayerGui = player:WaitForChild("PlayerGui")
+
+-- GUI
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "HackLoading"
+ScreenGui.Parent = PlayerGui
+ScreenGui.IgnoreGuiInset = true
+ScreenGui.ResetOnSpawn = false
+ScreenGui.DisplayOrder = 999999
+
+-- FULLSCREEN FRAME
 local Frame = Instance.new("Frame")
-Frame.Size = UDim2.new(1, 0, 1, 0) -- FULLSCREEN
-Frame.Position = UDim2.new(0, 0, 0, 0)
+Frame.Size = UDim2.new(1,0,1,0)
 Frame.BackgroundColor3 = Color3.fromRGB(0,0,0)
+Frame.BorderSizePixel = 0
 Frame.Parent = ScreenGui
+
+-- BLOCK INPUT
+local Block = Instance.new("TextButton")
+Block.Size = UDim2.new(1,0,1,0)
+Block.BackgroundTransparency = 1
+Block.Text = ""
+Block.AutoButtonColor = false
+Block.Parent = Frame
 
 -- TITLE
 local Title = Instance.new("TextLabel")
@@ -34,7 +51,7 @@ Terminal.Text = ""
 Terminal.TextWrapped = true
 Terminal.Parent = Frame
 
--- PROGRESS BAR BG
+-- PROGRESS BG
 local ProgressBG = Instance.new("Frame")
 ProgressBG.Size = UDim2.new(1,-40,0,8)
 ProgressBG.Position = UDim2.new(0,20,1,-40)
@@ -49,7 +66,7 @@ Progress.BackgroundColor3 = Color3.fromRGB(0,255,150)
 Progress.BorderSizePixel = 0
 Progress.Parent = ProgressBG
 
--- PERCENT TEXT
+-- PERCENT
 local Percent = Instance.new("TextLabel")
 Percent.Size = UDim2.new(1,0,0,20)
 Percent.Position = UDim2.new(0,0,1,-20)
@@ -60,7 +77,7 @@ Percent.Font = Enum.Font.Code
 Percent.TextSize = 16
 Percent.Parent = Frame
 
--- LOG DATA
+-- LOG
 local logs = {
 "> [SUCCESS] Blazehub module initialized.",
 "> Establishing secure connection...",
@@ -83,28 +100,33 @@ local logs = {
 local progress = 0
 
 -- TYPING EFFECT
-spawn(function()
-	for i,v in ipairs(logs) do
-		for c = 1,#v do
-			Terminal.Text = Terminal.Text .. string.sub(v,c,c)
-			wait(0.015)
+task.spawn(function()
+	for _,v in ipairs(logs) do
+		for i = 1,#v do
+			Terminal.Text = Terminal.Text .. v:sub(i,i)
+			task.wait(0.015)
 		end
 		Terminal.Text = Terminal.Text .. "\n"
-		wait(0.15)
+		task.wait(0.15)
 	end
 end)
 
--- PROGRESS (STUCK 99.8%)
-spawn(function()
+-- PROGRESS STUCK
+task.spawn(function()
 	while true do
 		if progress < 99.8 then
-			progress = progress + math.random()*3
+			progress += math.random() * 3
 			if progress > 99.8 then
 				progress = 99.8
 			end
 		end
 		
 		Progress.Size = UDim2.new(progress/100,0,1,0)
+		Percent.Text = string.format("%.1f%%",progress)
+		
+		task.wait(0.4)
+	end
+end)		Progress.Size = UDim2.new(progress/100,0,1,0)
 		Percent.Text = string.format("%.1f%%",progress)
 		
 		wait(0.4)
