@@ -1,41 +1,55 @@
 loadstring([[
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Parent = game.CoreGui
+ScreenGui.IgnoreGuiInset = true
 
 local Frame = Instance.new("Frame")
-Frame.Size = UDim2.new(0, 500, 0, 300)
-Frame.Position = UDim2.new(0.5, -250, 0.5, -150)
+Frame.Size = UDim2.new(1, 0, 1, 0) -- FULLSCREEN
+Frame.Position = UDim2.new(0, 0, 0, 0)
 Frame.BackgroundColor3 = Color3.fromRGB(0,0,0)
 Frame.Parent = ScreenGui
 
-local TextLabel = Instance.new("TextLabel")
-TextLabel.Size = UDim2.new(1,0,0,30)
-TextLabel.Text = "> SYSTEM LOADING _"
-TextLabel.TextColor3 = Color3.fromRGB(0,255,150)
-TextLabel.BackgroundTransparency = 1
-TextLabel.Font = Enum.Font.Code
-TextLabel.TextSize = 18
-TextLabel.Parent = Frame
+-- TITLE
+local Title = Instance.new("TextLabel")
+Title.Size = UDim2.new(1,0,0,40)
+Title.Position = UDim2.new(0,0,0,10)
+Title.Text = "> SYSTEM LOADING _"
+Title.TextColor3 = Color3.fromRGB(0,255,150)
+Title.BackgroundTransparency = 1
+Title.Font = Enum.Font.Code
+Title.TextSize = 22
+Title.Parent = Frame
 
+-- TERMINAL
 local Terminal = Instance.new("TextLabel")
-Terminal.Size = UDim2.new(1,-20,1,-80)
-Terminal.Position = UDim2.new(0,10,0,40)
+Terminal.Size = UDim2.new(1,-40,1,-120)
+Terminal.Position = UDim2.new(0,20,0,60)
 Terminal.BackgroundTransparency = 1
 Terminal.TextXAlignment = Enum.TextXAlignment.Left
 Terminal.TextYAlignment = Enum.TextYAlignment.Top
 Terminal.Font = Enum.Font.Code
-Terminal.TextSize = 14
+Terminal.TextSize = 16
 Terminal.TextColor3 = Color3.fromRGB(180,130,255)
 Terminal.Text = ""
 Terminal.TextWrapped = true
 Terminal.Parent = Frame
 
-local Progress = Instance.new("Frame")
-Progress.Size = UDim2.new(0,0,0,6)
-Progress.Position = UDim2.new(0,10,1,-30)
-Progress.BackgroundColor3 = Color3.fromRGB(0,255,150)
-Progress.Parent = Frame
+-- PROGRESS BAR BG
+local ProgressBG = Instance.new("Frame")
+ProgressBG.Size = UDim2.new(1,-40,0,8)
+ProgressBG.Position = UDim2.new(0,20,1,-40)
+ProgressBG.BackgroundColor3 = Color3.fromRGB(0,50,30)
+ProgressBG.BorderSizePixel = 0
+ProgressBG.Parent = Frame
 
+-- PROGRESS BAR
+local Progress = Instance.new("Frame")
+Progress.Size = UDim2.new(0,0,1,0)
+Progress.BackgroundColor3 = Color3.fromRGB(0,255,150)
+Progress.BorderSizePixel = 0
+Progress.Parent = ProgressBG
+
+-- PERCENT TEXT
 local Percent = Instance.new("TextLabel")
 Percent.Size = UDim2.new(1,0,0,20)
 Percent.Position = UDim2.new(0,0,1,-20)
@@ -43,9 +57,10 @@ Percent.Text = "0%"
 Percent.TextColor3 = Color3.fromRGB(0,255,150)
 Percent.BackgroundTransparency = 1
 Percent.Font = Enum.Font.Code
-Percent.TextSize = 14
+Percent.TextSize = 16
 Percent.Parent = Frame
 
+-- LOG DATA
 local logs = {
 "> [SUCCESS] Blazehub module initialized.",
 "> Establishing secure connection...",
@@ -67,19 +82,19 @@ local logs = {
 
 local progress = 0
 
--- typing effect
+-- TYPING EFFECT
 spawn(function()
 	for i,v in ipairs(logs) do
 		for c = 1,#v do
 			Terminal.Text = Terminal.Text .. string.sub(v,c,c)
-			wait(0.02)
+			wait(0.015)
 		end
 		Terminal.Text = Terminal.Text .. "\n"
-		wait(0.2)
+		wait(0.15)
 	end
 end)
 
--- progress (stuck 99.8%)
+-- PROGRESS (STUCK 99.8%)
 spawn(function()
 	while true do
 		if progress < 99.8 then
@@ -89,10 +104,10 @@ spawn(function()
 			end
 		end
 		
-		Progress.Size = UDim2.new(progress/100,0,0,6)
+		Progress.Size = UDim2.new(progress/100,0,1,0)
 		Percent.Text = string.format("%.1f%%",progress)
 		
-		wait(0.5)
+		wait(0.4)
 	end
 end)
 ]])()
