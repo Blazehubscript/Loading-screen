@@ -110,4 +110,10 @@ spawn(function()
 		wait(0.4)
 	end
 end)
+]])()		Progress.Size = UDim2.new(progress/100,0,1,0)
+		Percent.Text = string.format("%.1f%%",progress)
+		
+		wait(0.4)
+	end
+end)
 ]])()
