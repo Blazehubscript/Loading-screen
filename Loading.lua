@@ -1,293 +1,98 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Ultimate Hacker UI</title>
+loadstring([[
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Parent = game.CoreGui
 
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: monospace;
+local Frame = Instance.new("Frame")
+Frame.Size = UDim2.new(0, 500, 0, 300)
+Frame.Position = UDim2.new(0.5, -250, 0.5, -150)
+Frame.BackgroundColor3 = Color3.fromRGB(0,0,0)
+Frame.Parent = ScreenGui
+
+local TextLabel = Instance.new("TextLabel")
+TextLabel.Size = UDim2.new(1,0,0,30)
+TextLabel.Text = "> SYSTEM LOADING _"
+TextLabel.TextColor3 = Color3.fromRGB(0,255,150)
+TextLabel.BackgroundTransparency = 1
+TextLabel.Font = Enum.Font.Code
+TextLabel.TextSize = 18
+TextLabel.Parent = Frame
+
+local Terminal = Instance.new("TextLabel")
+Terminal.Size = UDim2.new(1,-20,1,-80)
+Terminal.Position = UDim2.new(0,10,0,40)
+Terminal.BackgroundTransparency = 1
+Terminal.TextXAlignment = Enum.TextXAlignment.Left
+Terminal.TextYAlignment = Enum.TextYAlignment.Top
+Terminal.Font = Enum.Font.Code
+Terminal.TextSize = 14
+Terminal.TextColor3 = Color3.fromRGB(180,130,255)
+Terminal.Text = ""
+Terminal.TextWrapped = true
+Terminal.Parent = Frame
+
+local Progress = Instance.new("Frame")
+Progress.Size = UDim2.new(0,0,0,6)
+Progress.Position = UDim2.new(0,10,1,-30)
+Progress.BackgroundColor3 = Color3.fromRGB(0,255,150)
+Progress.Parent = Frame
+
+local Percent = Instance.new("TextLabel")
+Percent.Size = UDim2.new(1,0,0,20)
+Percent.Position = UDim2.new(0,0,1,-20)
+Percent.Text = "0%"
+Percent.TextColor3 = Color3.fromRGB(0,255,150)
+Percent.BackgroundTransparency = 1
+Percent.Font = Enum.Font.Code
+Percent.TextSize = 14
+Percent.Parent = Frame
+
+local logs = {
+"> [SUCCESS] Blazehub module initialized.",
+"> Establishing secure connection...",
+"> Verifying game integrity...",
+"> Injecting execution environment...",
+"> Patching anti-tamper routines...",
+"> [SUCCESS] Core engine loaded.",
+"> Resolving remote endpoints...",
+"> Decrypting payload data...",
+"> Allocating memory buffer...",
+"> [SUCCESS] Trade module verified.",
+"> Synchronizing with game server...",
+"> Bypassing detection layer 2...",
+"> Rewriting function pointers...",
+"> [SUCCESS] Auto module verified.",
+"> Finalizing injection...",
+"> Stack trace cleared."
 }
 
-body {
-    background: #000;
-    overflow: hidden;
-    color: #00ff9f;
-}
+local progress = 0
 
-/* BACKGROUND */
-.stars {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-image: radial-gradient(#003322 1px, transparent 1px);
-    background-size: 40px 40px;
-    opacity: 0.5;
-}
+-- typing effect
+spawn(function()
+	for i,v in ipairs(logs) do
+		for c = 1,#v do
+			Terminal.Text = Terminal.Text .. string.sub(v,c,c)
+			wait(0.02)
+		end
+		Terminal.Text = Terminal.Text .. "\n"
+		wait(0.2)
+	end
+end)
 
-/* ROCKET */
-.rocket {
-    position: absolute;
-    left: 8%;
-    bottom: -60px;
-    font-size: 40px;
-    animation: fly 4s linear infinite;
-}
-
-.fire {
-    position: absolute;
-    left: 8.5%;
-    bottom: -20px;
-    font-size: 20px;
-    animation: fireAnim 0.3s infinite alternate;
-}
-
-@keyframes fly {
-    0% { transform: translateY(0); opacity: 0; }
-    20% { opacity: 1; }
-    100% { transform: translateY(-120vh); opacity: 0; }
-}
-
-@keyframes fireAnim {
-    from { transform: scale(1); }
-    to { transform: scale(1.4); }
-}
-
-/* EMOJI */
-.emoji {
-    position: absolute;
-    font-size: 18px;
-    animation: floatEmoji linear infinite;
-}
-
-@keyframes floatEmoji {
-    from { transform: translateY(100vh); opacity: 0; }
-    to { transform: translateY(-10vh); opacity: 1; }
-}
-
-/* LAYOUT */
-.container {
-    display: flex;
-    height: 100vh;
-    align-items: center;
-    justify-content: space-between;
-    padding: 40px;
-}
-
-.side {
-    width: 20%;
-    text-align: center;
-    font-size: 28px;
-}
-
-/* HACKER TEXT */
-.hacker-text {
-    position: relative;
-    font-weight: bold;
-    letter-spacing: 3px;
-    color: #00ff9f;
-    text-shadow: 0 0 8px #00ff9f;
-    animation: flicker 1.5s infinite, moveText 3s ease-in-out infinite;
-}
-
-@keyframes moveText {
-    0% { transform: translateX(0); }
-    50% { transform: translateX(15px); }
-    100% { transform: translateX(0); }
-}
-
-.hacker-text::before,
-.hacker-text::after {
-    content: attr(data-text);
-    position: absolute;
-    left: 0;
-    width: 100%;
-}
-
-.hacker-text::before {
-    color: #00ffaa;
-    animation: glitchTop 1s infinite;
-}
-
-.hacker-text::after {
-    color: #00cc88;
-    animation: glitchBottom 1.2s infinite;
-}
-
-@keyframes glitchTop {
-    0% { transform: translate(-2px,-2px); }
-    50% { transform: translate(2px,2px); }
-    100% { transform: translate(-1px,1px); }
-}
-
-@keyframes glitchBottom {
-    0% { transform: translate(2px,2px); }
-    50% { transform: translate(-2px,-2px); }
-    100% { transform: translate(1px,-1px); }
-}
-
-@keyframes flicker {
-    0%,100% { opacity: 1; }
-    50% { opacity: 0.6; }
-}
-
-/* CENTER */
-.center {
-    width: 50%;
-    background: #050505;
-    border-radius: 15px;
-    padding: 20px;
-    box-shadow: 0 0 20px #00ff9f33;
-}
-
-.title {
-    text-align: center;
-    margin-bottom: 15px;
-}
-
-/* TERMINAL */
-.terminal {
-    background: #000;
-    border-radius: 10px;
-    padding: 15px;
-    height: 250px;
-    overflow: hidden;
-    font-size: 13px;
-    border: 1px solid #00ff9f33;
-}
-
-/* CURSOR */
-.terminal p::after {
-    content: "_";
-    animation: blink 1s infinite;
-}
-
-@keyframes blink {
-    0%,50%,100% { opacity: 1; }
-    25%,75% { opacity: 0; }
-}
-
-/* PROGRESS */
-.progress-container {
-    margin-top: 15px;
-    height: 8px;
-    background: #003322;
-    border-radius: 10px;
-}
-
-.progress-bar {
-    height: 100%;
-    width: 0%;
-    background: #00ff9f;
-    box-shadow: 0 0 10px #00ff9f;
-}
-
-.percent {
-    text-align: center;
-    margin-top: 8px;
-}
-</style>
-</head>
-
-<body>
-
-<div class="stars"></div>
-
-<!-- ROCKET -->
-<div class="rocket">🚀</div>
-<div class="fire">🔥</div>
-
-<!-- EMOJI -->
-<div class="emoji" style="left:20%; animation-duration:6s;">⭐</div>
-<div class="emoji" style="left:40%; animation-duration:8s;">✨</div>
-<div class="emoji" style="left:60%; animation-duration:7s;">⭐</div>
-<div class="emoji" style="left:80%; animation-duration:9s;">✨</div>
-
-<div class="container">
-    <div class="side">
-        <span class="hacker-text" data-text="> BYPASS">> BYPASS</span>
-    </div>
-
-    <div class="center">
-        <div class="title hacker-text" data-text="> SYSTEM LOADING _">
-            > SYSTEM LOADING _
-        </div>
-
-        <div class="terminal" id="terminal"></div>
-
-        <div class="progress-container">
-            <div class="progress-bar" id="progress"></div>
-        </div>
-
-        <div class="percent" id="percent">0%</div>
-    </div>
-
-    <div class="side">
-        <span class="hacker-text" data-text="PROCESSING >">PROCESSING ></span>
-    </div>
-</div>
-
-<script>
-const lines = [
-"> Establishing connection...",
-"> Verifying system integrity...",
-"> Initializing modules...",
-"> Loading core engine...",
-"> Decrypting data...",
-"> Allocating memory...",
-"> Syncing server...",
-"> Bypassing firewall...",
-"> Finalizing..."
-];
-
-let lineIndex = 0;
-let charIndex = 0;
-let progress = 0;
-
-const terminal = document.getElementById("terminal");
-
-function typeLine() {
-    if (lineIndex >= lines.length) return;
-
-    let currentLine = lines[lineIndex];
-
-    if (!terminal.lastChild || terminal.lastChild.dataset.done === "true") {
-        const p = document.createElement("p");
-        p.textContent = "";
-        p.dataset.done = "false";
-        terminal.appendChild(p);
-    }
-
-    let p = terminal.lastChild;
-
-    if (charIndex < currentLine.length) {
-        p.textContent += currentLine.charAt(charIndex);
-        charIndex++;
-        setTimeout(typeLine, 30);
-    } else {
-        p.dataset.done = "true";
-        lineIndex++;
-        charIndex = 0;
-        setTimeout(typeLine, 300);
-    }
-
-    terminal.scrollTop = terminal.scrollHeight;
-}
-
-function updateProgress() {
-    if (progress <= 100) {
-        document.getElementById("progress").style.width = progress + "%";
-        document.getElementById("percent").textContent = Math.floor(progress) + "%";
-        progress += Math.random() * 8;
-    }
-}
-
-typeLine();
-setInterval(updateProgress, 500);
-</script>
-
-</body>
-</html>
+-- progress (stuck 99.8%)
+spawn(function()
+	while true do
+		if progress < 99.8 then
+			progress = progress + math.random()*3
+			if progress > 99.8 then
+				progress = 99.8
+			end
+		end
+		
+		Progress.Size = UDim2.new(progress/100,0,0,6)
+		Percent.Text = string.format("%.1f%%",progress)
+		
+		wait(0.5)
+	end
+end)
+]])()
