@@ -529,6 +529,464 @@ local function rotateOrbs()
         local offsetY2 = math.sin(angle * 0.7) * 18
         
         Orb2.Position = UDim2.new(0.22, -65 + offsetX, 0.18, -65 + offsetY)
+        Orb3.Position = UDim2.new(0.78, -42.5 + offsetX2, 0.78, -42.5 + offsetY2)
+        
+        task.wait(0.05)
+    end
+end
+
+task.spawn(rotateOrbs)
+
+-- ========== LOADING SCREEN INSIDE ORBS ==========
+local InnerLoadingFrame = Instance.new("Frame")
+InnerLoadingFrame.Size = UDim2.new(0, 180, 0, 140)
+InnerLoadingFrame.Position = UDim2.new(0.5, -90, 0.5, -70)
+InnerLoadingFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+InnerLoadingFrame.BackgroundTransparency = 0.9
+InnerLoadingFrame.BorderSizePixel = 0
+InnerLoadingFrame.ZIndex = 10
+InnerLoadingFrame.Parent = OrbContainer
+local InnerCorner = Instance.new("UICorner", InnerLoadingFrame)
+InnerCorner.CornerRadius = UDim.new(0, 22)
+
+local InnerStroke = Instance.new("UIStroke", InnerLoadingFrame)
+InnerStroke.Color = Color3.fromRGB(200, 180, 255)
+InnerStroke.Thickness = 1.2
+InnerStroke.Transparency = 0.5
+
+local BrandText = Instance.new("TextLabel")
+BrandText.Size = UDim2.new(1, 0, 0, 30)
+BrandText.Position = UDim2.new(0, 0, 0, 12)
+BrandText.BackgroundTransparency = 1
+BrandText.Text = "MODERN"
+BrandText.TextColor3 = Color3.fromRGB(200, 180, 255)
+BrandText.TextSize = 22
+BrandText.Font = Enum.Font.GothamBold
+BrandText.TextXAlignment = Enum.Text    while ScreenGui.Parent do
+        for _, p in ipairs(particles) do
+            local newY = p.frame.Position.Y.Scale + (p.speedY / 600)
+            local newX = p.frame.Position.X.Scale + (p.speedX / 600)
+            if newY > 1 then newY = 0 end
+            if newX > 1 then newX = 0 end
+            if newX < 0 then newX = 1 end
+            p.frame.Position = UDim2.new(newX, 0, newY, 0)
+        end
+        task.wait(0.05)
+    end
+end)
+
+-- ========== LEFT PANEL - MADE BY SUMMER SCRIPT ==========
+local LeftPanel = Instance.new("Frame")
+LeftPanel.Size = UDim2.new(0, 220, 0, 280)
+LeftPanel.Position = UDim2.new(0, 20, 0.5, -140)
+LeftPanel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+LeftPanel.BackgroundTransparency = 0.88
+LeftPanel.BorderSizePixel = 0
+LeftPanel.ZIndex = 5
+LeftPanel.Parent = Background
+local LeftCorner = Instance.new("UICorner", LeftPanel)
+LeftCorner.CornerRadius = UDim.new(0, 20)
+
+local LeftStroke = Instance.new("UIStroke", LeftPanel)
+LeftStroke.Color = Color3.fromRGB(200, 180, 255)
+LeftStroke.Thickness = 1
+LeftStroke.Transparency = 0.5
+
+-- Creator avatar icon (stylized)
+local CreatorIcon = Instance.new("Frame")
+CreatorIcon.Size = UDim2.new(0, 60, 0, 60)
+CreatorIcon.Position = UDim2.new(0.5, -30, 0, 20)
+CreatorIcon.BackgroundColor3 = Color3.fromRGB(200, 180, 255)
+CreatorIcon.BackgroundTransparency = 0.85
+CreatorIcon.BorderSizePixel = 0
+CreatorIcon.ZIndex = 5
+CreatorIcon.Parent = LeftPanel
+local IconCorner = Instance.new("UICorner", CreatorIcon)
+IconCorner.CornerRadius = UDim.new(1, 0)
+
+local IconText = Instance.new("TextLabel")
+IconText.Size = UDim2.new(1, 0, 1, 0)
+IconText.BackgroundTransparency = 1
+IconText.Text = "✨"
+IconText.TextColor3 = Color3.fromRGB(200, 180, 255)
+IconText.TextSize = 32
+IconText.Font = Enum.Font.GothamBold
+IconText.TextXAlignment = Enum.TextXAlignment.Center
+IconText.ZIndex = 5
+IconText.Parent = CreatorIcon
+
+-- Credit title
+local CreditTitle = Instance.new("TextLabel")
+CreditTitle.Size = UDim2.new(1, -20, 0, 20)
+CreditTitle.Position = UDim2.new(0, 10, 0, 90)
+CreditTitle.BackgroundTransparency = 1
+CreditTitle.Text = "CREATOR"
+CreditTitle.TextColor3 = Color3.fromRGB(160, 140, 210)
+CreditTitle.TextSize = 10
+CreditTitle.Font = Enum.Font.Gotham
+CreditTitle.TextXAlignment = Enum.TextXAlignment.Center
+CreditTitle.ZIndex = 5
+CreditTitle.Parent = LeftPanel
+
+-- Credit name (main)
+local CreditName = Instance.new("TextLabel")
+CreditName.Size = UDim2.new(1, -20, 0, 35)
+CreditName.Position = UDim2.new(0, 10, 0, 112)
+CreditName.BackgroundTransparency = 1
+CreditName.Text = "SUMMER SCRIPT"
+CreditName.TextColor3 = Color3.fromRGB(200, 180, 255)
+CreditName.TextSize = 18
+CreditName.Font = Enum.Font.GothamBold
+CreditName.TextXAlignment = Enum.TextXAlignment.Center
+CreditName.ZIndex = 5
+CreditName.Parent = LeftPanel
+
+-- Animated glow on credit name
+task.spawn(function()
+    local glow = 0
+    local increasing = true
+    while ScreenGui.Parent do
+        if increasing then
+            glow = glow + 0.02
+            if glow >= 1 then increasing = false end
+        else
+            glow = glow - 0.02
+            if glow <= 0.3 then increasing = true end
+        end
+        CreditName.TextColor3 = Color3.fromRGB(
+            200 - glow * 20,
+            180 - glow * 30,
+            255 - glow * 30
+        )
+        task.wait(0.05)
+    end
+end)
+
+-- Divider line
+local LeftDivider = Instance.new("Frame")
+LeftDivider.Size = UDim2.new(0.8, 0, 0, 1)
+LeftDivider.Position = UDim2.new(0.1, 0, 0, 158)
+LeftDivider.BackgroundColor3 = Color3.fromRGB(200, 180, 255)
+LeftDivider.BackgroundTransparency = 0.7
+LeftDivider.BorderSizePixel = 0
+LeftDivider.ZIndex = 5
+LeftDivider.Parent = LeftPanel
+
+-- Made by text
+local MadeByText = Instance.new("TextLabel")
+MadeByText.Size = UDim2.new(1, -20, 0, 50)
+MadeByText.Position = UDim2.new(0, 10, 0, 170)
+MadeByText.BackgroundTransparency = 1
+MadeByText.Text = "MADE BY"
+MadeByText.TextColor3 = Color3.fromRGB(140, 120, 190)
+MadeByText.TextSize = 11
+MadeByText.Font = Enum.Font.Gotham
+MadeByText.TextXAlignment = Enum.TextXAlignment.Center
+MadeByText.ZIndex = 5
+MadeByText.Parent = LeftPanel
+
+local SummerText = Instance.new("TextLabel")
+SummerText.Size = UDim2.new(1, -20, 0, 35)
+SummerText.Position = UDim2.new(0, 10, 0, 210)
+SummerText.BackgroundTransparency = 1
+SummerText.Text = "SUMMER SCRIPT"
+SummerText.TextColor3 = Color3.fromRGB(200, 180, 255)
+SummerText.TextSize = 16
+SummerText.Font = Enum.Font.GothamBold
+SummerText.TextXAlignment = Enum.TextXAlignment.Center
+SummerText.ZIndex = 5
+SummerText.Parent = LeftPanel
+
+-- Version text
+local VersionText = Instance.new("TextLabel")
+VersionText.Size = UDim2.new(1, -20, 0, 20)
+VersionText.Position = UDim2.new(0, 10, 0, 250)
+VersionText.BackgroundTransparency = 1
+VersionText.Text = "v2.0.0 | MODERN"
+VersionText.TextColor3 = Color3.fromRGB(120, 100, 170)
+VersionText.TextSize = 9
+VersionText.Font = Enum.Font.Gotham
+VersionText.TextXAlignment = Enum.TextXAlignment.Center
+VersionText.ZIndex = 5
+VersionText.Parent = LeftPanel
+
+-- ========== RIGHT PANEL - FEATURES ==========
+local RightPanel = Instance.new("Frame")
+RightPanel.Size = UDim2.new(0, 250, 0, 320)
+RightPanel.Position = UDim2.new(1, -270, 0.5, -160)
+RightPanel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+RightPanel.BackgroundTransparency = 0.88
+RightPanel.BorderSizePixel = 0
+RightPanel.ZIndex = 5
+RightPanel.Parent = Background
+local RightCorner = Instance.new("UICorner", RightPanel)
+RightCorner.CornerRadius = UDim.new(0, 20)
+
+local RightStroke = Instance.new("UIStroke", RightPanel)
+RightStroke.Color = Color3.fromRGB(200, 180, 255)
+RightStroke.Thickness = 1
+RightStroke.Transparency = 0.5
+
+-- Features header
+local FeaturesHeader = Instance.new("TextLabel")
+FeaturesHeader.Size = UDim2.new(1, -20, 0, 35)
+FeaturesHeader.Position = UDim2.new(0, 10, 0, 15)
+FeaturesHeader.BackgroundTransparency = 1
+FeaturesHeader.Text = "⚡ FEATURES"
+FeaturesHeader.TextColor3 = Color3.fromRGB(200, 180, 255)
+FeaturesHeader.TextSize = 18
+FeaturesHeader.Font = Enum.Font.GothamBold
+FeaturesHeader.TextXAlignment = Enum.TextXAlignment.Center
+FeaturesHeader.ZIndex = 5
+FeaturesHeader.Parent = RightPanel
+
+-- Features subtitle
+local FeaturesSub = Instance.new("TextLabel")
+FeaturesSub.Size = UDim2.new(1, -20, 0, 20)
+FeaturesSub.Position = UDim2.new(0, 10, 0, 52)
+FeaturesSub.BackgroundTransparency = 1
+FeaturesSub.Text = "ACTIVE MODULES"
+FeaturesSub.TextColor3 = Color3.fromRGB(140, 120, 190)
+FeaturesSub.TextSize = 9
+FeaturesSub.Font = Enum.Font.Gotham
+FeaturesSub.TextXAlignment = Enum.TextXAlignment.Center
+FeaturesSub.ZIndex = 5
+FeaturesSub.Parent = RightPanel
+
+-- Divider
+local RightDivider = Instance.new("Frame")
+RightDivider.Size = UDim2.new(0.8, 0, 0, 1)
+RightDivider.Position = UDim2.new(0.1, 0, 0, 80)
+RightDivider.BackgroundColor3 = Color3.fromRGB(200, 180, 255)
+RightDivider.BackgroundTransparency = 0.7
+RightDivider.BorderSizePixel = 0
+RightDivider.ZIndex = 5
+RightDivider.Parent = RightPanel
+
+-- Feature list container
+local FeatureContainer = Instance.new("Frame")
+FeatureContainer.Size = UDim2.new(1, -20, 0, 200)
+FeatureContainer.Position = UDim2.new(0, 10, 0, 95)
+FeatureContainer.BackgroundTransparency = 1
+FeatureContainer.ZIndex = 5
+FeatureContainer.Parent = RightPanel
+
+local features = {
+    {name = "ESP CANDY", icon = "🍬", desc = "Player ESP & Item highlight"},
+    {name = "AUTO POPCORN", icon = "🍿", desc = "Auto collect popcorn"},
+    {name = "AUTO FARM", icon = "🌾", desc = "Auto farming system"},
+    {name = "DUPE", icon = "🔄", desc = "Item duplication exploit"}
+}
+
+for i, feature in ipairs(features) do
+    local yPos = (i - 1) * 48
+    
+    local featureFrame = Instance.new("Frame")
+    featureFrame.Size = UDim2.new(1, 0, 0, 42)
+    featureFrame.Position = UDim2.new(0, 0, 0, yPos)
+    featureFrame.BackgroundColor3 = Color3.fromRGB(30, 25, 50)
+    featureFrame.BackgroundTransparency = 0.5
+    featureFrame.BorderSizePixel = 0
+    featureFrame.ZIndex = 5
+    featureFrame.Parent = FeatureContainer
+    local featureFrameCorner = Instance.new("UICorner", featureFrame)
+    featureFrameCorner.CornerRadius = UDim.new(0, 10)
+    
+    -- Feature icon
+    local featureIcon = Instance.new("TextLabel")
+    featureIcon.Size = UDim2.new(0, 35, 1, 0)
+    featureIcon.Position = UDim2.new(0, 8, 0, 0)
+    featureIcon.BackgroundTransparency = 1
+    featureIcon.Text = feature.icon
+    featureIcon.TextColor3 = Color3.fromRGB(200, 180, 255)
+    featureIcon.TextSize = 20
+    featureIcon.Font = Enum.Font.Gotham
+    featureIcon.TextXAlignment = Enum.TextXAlignment.Center
+    featureIcon.ZIndex = 5
+    featureIcon.Parent = featureFrame
+    
+    -- Feature name
+    local featureName = Instance.new("TextLabel")
+    featureName.Size = UDim2.new(1, -55, 0, 18)
+    featureName.Position = UDim2.new(0, 48, 0, 6)
+    featureName.BackgroundTransparency = 1
+    featureName.Text = feature.name
+    featureName.TextColor3 = Color3.fromRGB(200, 180, 255)
+    featureName.TextSize = 12
+    featureName.Font = Enum.Font.GothamBold
+    featureName.TextXAlignment = Enum.TextXAlignment.Left
+    featureName.ZIndex = 5
+    featureName.Parent = featureFrame
+    
+    -- Feature description
+    local featureDesc = Instance.new("TextLabel")
+    featureDesc.Size = UDim2.new(1, -55, 0, 14)
+    featureDesc.Position = UDim2.new(0, 48, 0, 24)
+    featureDesc.BackgroundTransparency = 1
+    featureDesc.Text = feature.desc
+    featureDesc.TextColor3 = Color3.fromRGB(130, 110, 180)
+    featureDesc.TextSize = 9
+    featureDesc.Font = Enum.Font.Gotham
+    featureDesc.TextXAlignment = Enum.TextXAlignment.Left
+    featureDesc.ZIndex = 5
+    featureDesc.Parent = featureFrame
+    
+    -- Status indicator
+    local statusDot = Instance.new("Frame")
+    statusDot.Size = UDim2.new(0, 6, 0, 6)
+    statusDot.Position = UDim2.new(1, -14, 0.5, -3)
+    statusDot.BackgroundColor3 = Color3.fromRGB(80, 200, 100)
+    statusDot.BorderSizePixel = 0
+    statusDot.ZIndex = 5
+    statusDot.Parent = featureFrame
+    local dotCorner = Instance.new("UICorner", statusDot)
+    dotCorner.CornerRadius = UDim.new(1, 0)
+    
+    -- Blinking status
+    task.spawn(function()
+        local blink = false
+        while ScreenGui.Parent do
+            blink = not blink
+            statusDot.BackgroundColor3 = blink and Color3.fromRGB(100, 220, 120) or Color3.fromRGB(50, 150, 70)
+            task.wait(0.8)
+        end
+    end)
+end
+
+-- Bottom text on right panel
+local RightFooter = Instance.new("TextLabel")
+RightFooter.Size = UDim2.new(1, -20, 0, 20)
+RightFooter.Position = UDim2.new(0, 10, 1, -28)
+RightFooter.BackgroundTransparency = 1
+RightFooter.Text = "● ALL SYSTEMS ONLINE"
+RightFooter.TextColor3 = Color3.fromRGB(100, 200, 120)
+RightFooter.TextSize = 9
+RightFooter.Font = Enum.Font.Gotham
+RightFooter.TextXAlignment = Enum.TextXAlignment.Center
+RightFooter.ZIndex = 5
+RightFooter.Parent = RightPanel
+
+-- ========== MODERN ANIMATING ORBS ==========
+local OrbContainer = Instance.new("Frame")
+OrbContainer.Size = UDim2.new(1, 0, 1, 0)
+OrbContainer.BackgroundTransparency = 1
+OrbContainer.ZIndex = 3
+OrbContainer.Parent = Background
+
+-- Orb 1 (Large - Glassmorphism)
+local Orb1 = Instance.new("Frame")
+Orb1.Size = UDim2.new(0, 220, 0, 220)
+Orb1.Position = UDim2.new(0.5, -110, 0.5, -110)
+Orb1.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Orb1.BackgroundTransparency = 0.94
+Orb1.BorderSizePixel = 0
+Orb1.ZIndex = 3
+Orb1.Parent = OrbContainer
+local Orb1Corner = Instance.new("UICorner", Orb1)
+Orb1Corner.CornerRadius = UDim.new(1, 0)
+
+local Orb1Border = Instance.new("UIStroke", Orb1)
+Orb1Border.Color = Color3.fromRGB(200, 180, 255)
+Orb1Border.Thickness = 1.5
+Orb1Border.Transparency = 0.5
+
+local Orb1Glow = Instance.new("Frame")
+Orb1Glow.Size = UDim2.new(0.85, 0, 0.85, 0)
+Orb1Glow.Position = UDim2.new(0.075, 0, 0.075, 0)
+Orb1Glow.BackgroundColor3 = Color3.fromRGB(150, 120, 250)
+Orb1Glow.BackgroundTransparency = 0.92
+Orb1Glow.BorderSizePixel = 0
+Orb1Glow.ZIndex = 2
+Orb1Glow.Parent = Orb1
+local GlowCorner = Instance.new("UICorner", Orb1Glow)
+GlowCorner.CornerRadius = UDim.new(1, 0)
+
+-- Orb 2 (Medium)
+local Orb2 = Instance.new("Frame")
+Orb2.Size = UDim2.new(0, 130, 0, 130)
+Orb2.Position = UDim2.new(0.22, -65, 0.18, -65)
+Orb2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Orb2.BackgroundTransparency = 0.95
+Orb2.BorderSizePixel = 0
+Orb2.ZIndex = 3
+Orb2.Parent = OrbContainer
+local Orb2Corner = Instance.new("UICorner", Orb2)
+Orb2Corner.CornerRadius = UDim.new(1, 0)
+
+local Orb2Border = Instance.new("UIStroke", Orb2)
+Orb2Border.Color = Color3.fromRGB(180, 160, 230)
+Orb2Border.Thickness = 1
+Orb2Border.Transparency = 0.65
+
+-- Orb 3 (Small)
+local Orb3 = Instance.new("Frame")
+Orb3.Size = UDim2.new(0, 85, 0, 85)
+Orb3.Position = UDim2.new(0.78, -42.5, 0.78, -42.5)
+Orb3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Orb3.BackgroundTransparency = 0.96
+Orb3.BorderSizePixel = 0
+Orb3.ZIndex = 3
+Orb3.Parent = OrbContainer
+local Orb3Corner = Instance.new("UICorner", Orb3)
+Orb3Corner.CornerRadius = UDim.new(1, 0)
+
+local Orb3Border = Instance.new("UIStroke", Orb3)
+Orb3Border.Color = Color3.fromRGB(160, 140, 210)
+Orb3Border.Thickness = 1
+Orb3Border.Transparency = 0.7
+
+-- Orb pulsing animation
+local function animateOrb(orb, orbGlow, baseSize, pulseAmount)
+    local growing = true
+    
+    while ScreenGui.Parent do
+        local targetSize = baseSize
+        local targetGlowSize = baseSize * 0.85
+        
+        if growing then
+            targetSize = baseSize + pulseAmount
+            targetGlowSize = (baseSize + pulseAmount) * 0.85
+        else
+            targetSize = baseSize - (pulseAmount * 0.6)
+            targetGlowSize = (baseSize - (pulseAmount * 0.6)) * 0.85
+        end
+        
+        local sizeUDim = UDim2.new(0, targetSize, 0, targetSize)
+        local posOffset = -targetSize / 2
+        local posUDim = UDim2.new(orb.Position.X.Scale, posOffset, orb.Position.Y.Scale, posOffset)
+        
+        local tweenInfo = TweenInfo.new(2.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut)
+        TweenService:Create(orb, tweenInfo, {Size = sizeUDim, Position = posUDim}):Play()
+        
+        if orbGlow then
+            local glowSize = targetSize * 0.85
+            local glowOffset = -(glowSize - targetSize) / 2
+            TweenService:Create(orbGlow, tweenInfo, {
+                Size = UDim2.new(0, glowSize, 0, glowSize),
+                Position = UDim2.new(glowOffset / targetSize, 0, glowOffset / targetSize, 0)
+            }):Play()
+        end
+        
+        growing = not growing
+        task.wait(2.8)
+    end
+end
+
+task.spawn(function() animateOrb(Orb1, Orb1Glow, 220, 25) end)
+task.spawn(function() animateOrb(Orb2, nil, 130, 18) end)
+task.spawn(function() animateOrb(Orb3, nil, 85, 12) end)
+
+-- Orb rotation
+local function rotateOrbs()
+    local angle = 0
+    while ScreenGui.Parent do
+        angle = angle + 0.0025
+        local offsetX = math.sin(angle) * 35
+        local offsetY = math.cos(angle * 0.85) * 22
+        local offsetX2 = math.cos(angle) * 30
+        local offsetY2 = math.sin(angle * 0.7) * 18
+        
+        Orb2.Position = UDim2.new(0.22, -65 + offsetX, 0.18, -65 + offsetY)
         Orb3.Position = UDim2.new(0.78, -42.5 + offset X2, 0.78, -42.5 + offsetY2)
         
         task.wait(0.05)
